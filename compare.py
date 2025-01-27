@@ -14,9 +14,20 @@ grouped_data = csv_data.groupby('base_date').agg({
     'power': 'mean'
 }).reset_index()
 
-print("Tarif base : ", grouped_data["base_price"].sum())
-print("Tarif HC & HP : ", grouped_data["hc_hp_price"].sum())
-print("Tarif tempo : ", grouped_data["tempo_price"].sum())
 grouped_data[["base_price", "hc_hp_price", 'tempo_price']].head(50).plot.bar()
 plt.show()
+
+data_sum = csv_data.agg({
+    'base_price': 'sum',
+    'hc_hp_price': 'sum',
+    'tempo_price': 'sum',
+    'kwh': 'sum',
+    'power': 'mean'
+})
+
+data_sum[["base_price", "hc_hp_price", 'tempo_price']].head(50).plot.bar()
+plt.show()
+
+
+
 grouped_data.to_csv("data/detailed_daily_consumption/prices_per_day.csv", index=False)
